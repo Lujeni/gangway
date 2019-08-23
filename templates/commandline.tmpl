@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 
-  <! -- Prism -->
+  <!-- Prism -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.14.0/prism.min.js" integrity="sha256-jTGzLAqOAcOL+ALD2f2tvFY7fs6dwkOeo88xiuVHaRk=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.14.0/components/prism-bash.min.js" integrity="sha256-Ch5rv5tgAdVMCh7Wqb0UOcXkQAHNFSezi+0v/0z6xfw=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.14.0/themes/prism-tomorrow.min.css" integrity="sha256-4S9ufRr1EqaUFFeM9/52GH68Hs1Sbvx8eFXBWpl8zPI=" crossorigin="anonymous" />
@@ -57,15 +57,16 @@ $ sudo mv ./kubectl /usr/local/bin/kubectl
                <code class="language-bash">
 echo "{{ .ClusterCA }}" \ > ca-{{ .ClusterName }}.pem
 kubectl config set-cluster {{ .ClusterName }} --server={{ .APIServerURL }} --certificate-authority=ca-{{ .ClusterName }}.pem --embed-certs
-kubectl config set-credentials {{ .Email }}  \
+kubectl config set-credentials {{ .KubeCfgUser }}  \
     --auth-provider=oidc  \
-    --auth-provider-arg=idp-issuer-url={{ .IssuerURL }}  \
-    --auth-provider-arg=client-id={{ .ClientID }}  \
-    --auth-provider-arg=client-secret={{ .ClientSecret }} \
-    --auth-provider-arg=refresh-token={{ .RefreshToken }} \
-    --auth-provider-arg=id-token={{ .IDToken }}
-kubectl config set-context {{ .ClusterName }} --cluster={{ .ClusterName }} --user={{ .Email }}
+    --auth-provider-arg='idp-issuer-url={{ .IssuerURL }}'  \
+    --auth-provider-arg='client-id={{ .ClientID }}'  \
+    --auth-provider-arg='client-secret={{ .ClientSecret }}' \
+    --auth-provider-arg='refresh-token={{ .RefreshToken }}' \
+    --auth-provider-arg='id-token={{ .IDToken }}'
+kubectl config set-context {{ .ClusterName }} --cluster={{ .ClusterName }} --user={{ .KubeCfgUser }}
 kubectl config use-context {{ .ClusterName }}
+rm ca-{{ .ClusterName }}.pem
               </code>
             </pre>
         </div>
